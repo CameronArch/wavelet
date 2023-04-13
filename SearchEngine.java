@@ -1,24 +1,40 @@
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
-class Handler implements URLHandler {
-    // The one bit of state on the server: a number that will be manipulated by
-    // various requests.
-    int num = 0;
+class Handler2 implements URLHandler {
+    
+    List<String> lis = new ArrayList<>();
 
     public String handleRequest(URI url) {
         if (url.getPath().equals("/")) {
-            return String.format("Cameron's Number: %d", num);
-        } else if (url.getPath().equals("/increment")) {
-            num += 1;
-            return String.format("Number incremented!");
-        } else {
+            return String.format("Cameron's Strings: %s", lis);
+        } 
+        else if (url.getPath().equals("/search")){
+            String[] parameter = url.getQuery().split("=");
+            
+            if (parameter[0].equals("s")) {
+                String search = parameter[1];
+
+                List<String> searchLis = new ArrayList<>();
+
+                for (String s: lis){
+                    if (s.contains(search)){
+                        searchLis.add(s);
+                    }
+                }
+                return String.format("%s match" + search, searchLis);
+            }
+        }
+
+        else {
             System.out.println("Path: " + url.getPath());
             if (url.getPath().contains("/add")) {
                 String[] parameters = url.getQuery().split("=");
-                if (parameters[0].equals("count")) {
-                    num += Integer.parseInt(parameters[1]);
-                    return String.format("Number increased by %s! It's now %d", parameters[1], num);
+                if (parameters[0].equals("s")) {
+                    lis.add(parameters[1]);
+                    return String.format(parameters[1] + "added to Cameron's strings! It's now %s", lis);
                 }
             }
             return "404 Not Found!";
@@ -26,7 +42,7 @@ class Handler implements URLHandler {
     }
 }
 
-class NumberServer {
+class StringServer {
     public static void main(String[] args) throws IOException {
         if(args.length == 0){
             System.out.println("Missing port number! Try any number between 1024 to 49151");
