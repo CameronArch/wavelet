@@ -13,19 +13,19 @@ class Handler2 implements URLHandler {
         } 
         else if (url.getPath().equals("/search")){
             String[] parameter = url.getQuery().split("=");
-            
+            String search ="";
+            List<String> searchLis = new ArrayList<>();
             if (parameter[0].equals("s")) {
-                String search = parameter[1];
-
-                List<String> searchLis = new ArrayList<>();
+                search = parameter[1];
 
                 for (String s: lis){
                     if (s.contains(search)){
                         searchLis.add(s);
                     }
                 }
-                return String.format("%s match" + search, searchLis);
+                
             }
+            return String.format("%s match" + search, searchLis);
         }
 
         else {
