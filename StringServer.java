@@ -5,11 +5,11 @@ import java.util.List;
 
 class Handler3 implements URLHandler {
     
-    List<String> lis = new ArrayList<>();
-    String[] l = {"a \n","b"};
+    String str = "";
+
     public String handleRequest(URI url) {
         if (url.getPath().equals("/")) {
-            return String.format("%s", lis);
+            return String.format("%s", str);
         }
 
         else {
@@ -17,13 +17,7 @@ class Handler3 implements URLHandler {
             if (url.getPath().contains("/add-message")) {
                 String[] parameters = url.getQuery().split("=");
                 if (parameters[0].equals("s")) {
-                    lis.add(parameters[1]+ "\n");
-                    
-                    String str = "";
-                    
-                    for(String s: lis) {
-                        str += s;
-                    }
+                    str += parameters[1]+ "\n";
                     
                     return String.format("%s",str);
                 }
